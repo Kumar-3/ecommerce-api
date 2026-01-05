@@ -1,4 +1,4 @@
-const { Schema, model, default: mongoose } = require("mongoose");
+const { Schema, model } = require("mongoose");
 const userSchema = new Schema({
   name: {
     type: String,
@@ -76,5 +76,8 @@ userSchema.index(
   },
   { unique: true }
 );
+
+userSchema.set("toObject", { virtuals: true });
+userSchema.set("toJSON", { virtuals: true });
 
 exports.User = model("User", userSchema);
