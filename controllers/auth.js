@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { User } = require("../models/users");
+const { User } = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Token } = require("../models/token");
@@ -68,7 +68,7 @@ exports.login = async function (req, res) {
       process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: "24h",
-      }
+      },
     );
     // Generate Refresh Token
     const refreshToken = jwt.sign(
@@ -79,7 +79,7 @@ exports.login = async function (req, res) {
       process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: "60d",
-      }
+      },
     );
 
     const token = await Token.findOne({
@@ -126,7 +126,7 @@ exports.verifyToken = async function (req, res) {
     }
     const isValid = jwt.verify(
       token.refreshToken,
-      process.env.REFRESH_TOKEN_SECRET
+      process.env.REFRESH_TOKEN_SECRET,
     );
     if (!isValid) {
       return res.json(false);
@@ -159,7 +159,7 @@ exports.forgotPassword = async function (req, res) {
     await mailSender.sendEmail(
       email,
       "Password Reset OTP",
-      `<p>Your password reset OTP is <b>${otp}</b>. It is valid for 10 minutes.</p>`
+      `<p>Your password reset OTP is <b>${otp}</b>. It is valid for 10 minutes.</p>`,
     );
     return res.status(200).json({
       message: "OTP sent to your email successfully.",

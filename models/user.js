@@ -43,6 +43,7 @@ const userSchema = new Schema({
 
   resetpasswordOtp: Number,
   resetpasswordOtpExpiry: Date,
+  cart: [{ type: Schema.Types.ObjectId, ref: "CartProduct" }],
   wishlist: [
     {
       productId: {
@@ -74,7 +75,7 @@ userSchema.index(
   {
     email: 1,
   },
-  { unique: true }
+  { unique: true },
 );
 
 userSchema.set("toObject", { virtuals: true });

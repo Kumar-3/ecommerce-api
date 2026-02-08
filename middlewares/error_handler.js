@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { Token } = require("../models/token");
-const { User } = require("../models/users");
+const { User } = require("../models/user");
 
 async function errorHandler(err, req, res, next) {
   if (err.name === "UnauthorizedError") {
@@ -29,7 +29,7 @@ async function errorHandler(err, req, res, next) {
 
       const payload = jwt.verify(
         token.refreshToken,
-        process.env.REFRESH_TOKEN_SECRET
+        process.env.REFRESH_TOKEN_SECRET,
       );
 
       const user = await User.findById(payload.userId);
@@ -43,7 +43,7 @@ async function errorHandler(err, req, res, next) {
       const newAccessToken = jwt.sign(
         { userId: payload.userId, isAdmin: payload.isAdmin },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "24h" }
+        { expiresIn: "24h" },
       );
 
       token.accessToken = newAccessToken;

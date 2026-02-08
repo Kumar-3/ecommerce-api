@@ -22,18 +22,18 @@ const productSchema = new Schema({
 });
 
 //pre-save hook
-productSchema.pre("save", async function (next) {
+productSchema.pre("save", async function () {
   if (this.reviews.length > 0) {
-    await this.populate("Review");
+    await this.populate("reviews");
+
     const totalRating = this.reviews.reduce(
       (acc, review) => acc + review.rating,
       0
     );
-    this.rating = totalRating / this.review.length;
-    this.rating = parseFloat((totalRating / this.review.length).toFixed(1));
+
     this.numberOfReviews = this.reviews.length;
+    this.rating = parseFloat((totalRating / this.reviews.length).toFixed(1));
   }
-  next();
 });
 
 productSchema.index({ name: "text", description: "text" });
